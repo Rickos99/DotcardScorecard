@@ -1,0 +1,82 @@
+* {
+    font-family: "Cairo", sans-serif;
+}
+
+table,
+th,
+td {
+    border: 0px solid black;
+}
+
+tfoot > tr > td:not(:first-child) {
+    border-top: 1px solid grey !important;
+    text-align: center;
+}
+
+.container {
+    max-width: 1024px;
+    width: 100%;
+    margin: 10px;
+    margin: 0 auto;
+}
+
+.shadow-lg {
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+}
+
+.shadow {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.scorecard {
+    margin: 0 auto 30px;
+    padding: 10px;
+}
+
+.card-header {
+    margin: 0 auto;
+}
+
+.player-header {
+    text-align: center;
+    min-width: 75px;
+}
+
+.bonus-header {
+    width: 25px;
+}
+
+.dice-face {
+    background-color: ghostwhite;
+    width: 30px;
+}
+
+.score-input,
+.bonus-input {
+    display: block;
+    background: none;
+    border: 1px solid lightgrey;
+    border-spacing: 0;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.score-input {
+    width: 50px;
+}
+
+.bonus-input {
+    width: 15px;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
