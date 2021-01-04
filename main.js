@@ -16,6 +16,41 @@ window.onload = () => {
     outputModelToTable();
 };
 
+class ScoreEntry {
+    constructor() {
+        this.points = 0;
+        this.isVictory = false;
+        this.isEmpty = true;
+    }
+
+    /**
+     *
+     * @param {number} points
+     * @param {boolean} isVictory
+     */
+    changeScore(points, isVictory) {
+        this.points = points;
+        this.isVictory = isVictory;
+        this.isEmpty = false;
+    }
+
+    removeScore() {
+        this.points = 0;
+        this.isVictory = false;
+        this.isEmpty = true;
+    }
+
+    /**
+     *
+     * @param {ScoreEntry} o
+     */
+    copyFrom(o) {
+        this.points = o.points;
+        this.isVictory = o.isVictory;
+        this.isEmpty = o.isEmpty;
+    }
+}
+
 let model = {
     players: [],
     scorecard: [],
@@ -196,7 +231,7 @@ function createInputCell(isScoreCell) {
     const cell = document.createElement("td");
     const scoreInput = document.createElement("input");
 
-    scoreInput.setAttribute("type", "number");
+    scoreInput.setAttribute("type", "tel");
     if (isScoreCell) {
         scoreInput.addEventListener("input", scoreInputChange);
         scoreInput.classList.add("score-input");
@@ -210,38 +245,51 @@ function createInputCell(isScoreCell) {
 }
 
 function scoreInputChange(ev) {
-    const inputValue = parseInt(ev.path[0].value);
+    const rawinputValue = ev.path[0].value;
     const col = ev.path[1].cellIndex - 1;
     const row = ev.path[2].rowIndex - ev.path[4].tHead.rows.length;
 
-    model.scorecard[row][col] = inputValue;
+    if (rawinputValue === "-") {
+        model.scorecard[row][col].changeScore(0, true);
+    } else if (!isNaN(parseInt(rawinputValue))) {
+        model.scorecard[row][col].changeScore(parseInt(rawinputValue), false);
+    } else {
+        model.scorecard[row][col].removeScore();
+    }
 
     calculateScore();
 }
 
 function bonusInputChange(ev) {
-    const inputValue = parseInt(ev.path[0].value);
+    const parsedInputValue = parseInt(ev.path[0].value);
     const col = ev.path[1].cellIndex + 4 - ev.path[2].childElementCount;
     const row = ev.path[2].rowIndex - ev.path[4].tHead.rows.length;
 
-    model.bonusPoints[row][col] = isNaN(inputValue) ? 0 : inputValue;
-    console.log(model.bonusPoints);
+    if (isNaN(parsedInputValue)) {
+        model.bonusPoints[row][col].removeScore();
+    } else {
+        model.bonusPoints[row][col].changeScore(parsedInputValue, false);
+    }
 
     calculateScore();
 }
 
-function calculateScore() {
+async function calculateScore() {
     let scores = Array(model.players.length);
     scores.fill(0);
     for (let row = 0; row < model.scorecard.length; row++) {
-        if (model.scorecard[row] === undefined) continue;
-
-        let bonusPoints = model.bonusPoints[row].reduce((a, b) => a + b, 0);
+        let bonusPoints = 0;
+        model.bonusPoints[row].forEach((scoreEntry) => {
+            bonusPoints += scoreEntry.points;
+        });
 
         for (let col = 0; col < model.scorecard[row].length; col++) {
             const cardEntry = model.scorecard[row][col];
-            if (!isNaN(cardEntry) && cardEntry !== null) {
-                scores[col] += cardEntry + bonusPoints;
+            if (!cardEntry.isVictory && !cardEntry.isEmpty) {
+                if (isNaN(cardEntry.points)) {
+                    console.warn(`${row}:${col}, NaN value detected`);
+                }
+                scores[col] += cardEntry.points + bonusPoints;
             }
         }
     }
@@ -258,13 +306,35 @@ function calculateScore() {
  * @returns {object}
  */
 function loadModelFromLocalStorage() {
-    const oldModel = localStorage.getItem(oldGameStorageKey);
-    return JSON.parse(oldModel);
+    const storageData = localStorage.getItem(oldGameStorageKey);
+    const parsedModel = JSON.parse(storageData);
+    if (parsedModel === null) return null;
+
+    for (let row = 0; row < parsedModel.scorecard.length; row++) {
+        for (let col = 0; col < parsedModel.scorecard[row].length; col++) {
+            parsedModel.scorecard[row][col] = Object.assign(
+                new ScoreEntry(),
+                parsedModel.scorecard[row][col]
+            );
+        }
+        for (let col = 0; col < parsedModel.bonusPoints[row].length; col++) {
+            parsedModel.bonusPoints[row][col] = Object.assign(
+                new ScoreEntry(),
+                parsedModel.bonusPoints[row][col]
+            );
+        }
+    }
+    return parsedModel;
 }
 
 function saveModelToLocalStorage() {
     const modelAsJson = JSON.stringify(model);
     localStorage.setItem(oldGameStorageKey, modelAsJson);
+}
+
+function removeModelFromLocalStorage() {
+    localStorage.removeItem(oldGameStorageKey);
+    location.reload();
 }
 
 function outputModelToTable() {
@@ -284,10 +354,22 @@ function outputModelToTable() {
         for (let col = 0; col < model.players.length + 4; col++) {
             const cellInputField = bodyRows[row].cells[col + 1].children[0];
             if (col < model.players.length) {
-                cellInputField.value = model.scorecard[row][col];
+                const scoreEntry = model.scorecard[row][col];
+                if (!scoreEntry.isEmpty) {
+                    if (scoreEntry.isVictory) {
+                        cellInputField.value = "-";
+                        console.log("Victory");
+                        console.log(cellInputField);
+                    } else {
+                        cellInputField.value = scoreEntry.points;
+                    }
+                }
             } else {
-                cellInputField.value =
+                const scoreEntry =
                     model.bonusPoints[row][col - model.players.length];
+                if (!scoreEntry.isEmpty) {
+                    cellInputField.value = scoreEntry.points;
+                }
             }
         }
     }
@@ -303,8 +385,8 @@ function addRowToModel(diceFaceValue) {
     const scorecardRow = Array(model.players.length);
     const bonusRow = Array(4);
 
-    scorecardRow.fill(0);
-    bonusRow.fill(0);
+    scorecardRow.fill(new ScoreEntry());
+    bonusRow.fill(new ScoreEntry());
 
     model.scorecard.push(scorecardRow);
     model.bonusPoints.push(bonusRow);
