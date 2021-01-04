@@ -29,7 +29,7 @@ tfoot > tr > td:not(:first-child) {
 }
 
 .scorecard {
-    margin: 0 auto 30px;
+    margin: 0 auto 55px;
     padding: 10px;
 }
 
@@ -48,7 +48,8 @@ tfoot > tr > td:not(:first-child) {
 
 .dice-face {
     background-color: ghostwhite;
-    width: 30px;
+    min-width: 30px;
+    min-height: 30px;
 }
 
 .score-input,
