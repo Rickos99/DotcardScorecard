@@ -1,7 +1,8 @@
 window.onload = () => {
     const oldGame = loadModelFromLocalStorage();
     if (oldGame === null) {
-        model.players = ["Player 1", "Player 2", "Player 3", "Player 4"];
+        const players = prompt("Enter player name(s), seperate names with comma");
+        model.players = players.split(/\s*,\s*/);
         for (let i = 9; i >= 0; i--) {
             addRowToModel(i);
         }
@@ -23,14 +24,20 @@ class ScoreEntry {
         this.isEmpty = true;
     }
 
+    addVictory() {
+        this.points = 0;
+        this.isVictory = true;
+        this.isEmpty = false;
+    }
+
     /**
      *
      * @param {number} points
      * @param {boolean} isVictory
      */
-    changeScore(points, isVictory) {
+    changeScore(points) {
         this.points = points;
-        this.isVictory = isVictory;
+        this.isVictory = false;
         this.isEmpty = false;
     }
 
@@ -185,7 +192,7 @@ function createDiceFace(faceValue) {
  *
  * @param {number} diceFaceValue
  */
-function addCardRow(diceFaceValue) {
+function addTableRow(diceFaceValue) {
     const table = document.querySelector("#scorecard");
     const newRow = table.tBodies[0].insertRow();
 
@@ -196,7 +203,7 @@ function addCardRow(diceFaceValue) {
 
     for (let i = 0; i < model.players.length + 4; i++) {
         const isScoreCell = i - model.players.length < 0;
-        newRow.appendChild(createInputCell(isScoreCell));
+        newRow.appendChild(generateInputCell(isScoreCell));
     }
 }
 
@@ -204,7 +211,7 @@ function addCardRow(diceFaceValue) {
  *
  * @param {string} playerName
  */
-function addPlayerColumn(playerIndex) {
+function addPlayerToTable(playerIndex) {
     const table = document.querySelector("#scorecard");
     const headerRow = table.tHead.rows[1];
     const bodyRows = table.tBodies[0].rows;
@@ -217,26 +224,31 @@ function addPlayerColumn(playerIndex) {
     headerRow.children[columnIndex].before(headerCell);
 
     for (const bodyRow of bodyRows) {
-        bodyRow.children[columnIndex].before(createInputCell(true));
+        bodyRow.children[columnIndex].before(generateInputCell(true));
     }
 
     footerRow.appendChild(document.createElement("td"));
+    
+    // Expand colspan for card-header to match players
+    const cardHeaderDatacell = document.querySelector("#card-header-datacell");
+    const previousColSpan = parseInt(cardHeaderDatacell.getAttribute("colspan"));
+    cardHeaderDatacell.setAttribute("colspan", previousColSpan + 1);
 }
 
 /**
  *
  * @param {boolean} isScoreCell
  */
-function createInputCell(isScoreCell) {
+function generateInputCell(isScoreCell) {
     const cell = document.createElement("td");
     const scoreInput = document.createElement("input");
 
     scoreInput.setAttribute("type", "tel");
     if (isScoreCell) {
-        scoreInput.addEventListener("input", scoreInputChange);
+        scoreInput.addEventListener("input", scoreInputChangeEvent);
         scoreInput.classList.add("score-input");
     } else {
-        scoreInput.addEventListener("input", bonusInputChange);
+        scoreInput.addEventListener("input", bonusInputChangeEvent);
         scoreInput.classList.add("bonus-input");
     }
 
@@ -244,15 +256,15 @@ function createInputCell(isScoreCell) {
     return cell;
 }
 
-function scoreInputChange(ev) {
+function scoreInputChangeEvent(ev) {
     const rawinputValue = ev.path[0].value;
     const col = ev.path[1].cellIndex - 1;
     const row = ev.path[2].rowIndex - ev.path[4].tHead.rows.length;
 
     if (rawinputValue === "-") {
-        model.scorecard[row][col].changeScore(0, true);
+        model.scorecard[row][col].addVictory();
     } else if (!isNaN(parseInt(rawinputValue))) {
-        model.scorecard[row][col].changeScore(parseInt(rawinputValue), false);
+        model.scorecard[row][col].changeScore(parseInt(rawinputValue));
     } else {
         model.scorecard[row][col].removeScore();
     }
@@ -260,15 +272,28 @@ function scoreInputChange(ev) {
     calculateScore();
 }
 
-function bonusInputChange(ev) {
+function bonusInputChangeEvent(ev) {
     const parsedInputValue = parseInt(ev.path[0].value);
     const col = ev.path[1].cellIndex + 4 - ev.path[2].childElementCount;
     const row = ev.path[2].rowIndex - ev.path[4].tHead.rows.length;
 
+    if (parsedInputValue < 0 || parsedInputValue > 9) {
+        const entry = model.bonusPoints[row][col];
+        
+        // Restore previous value
+        if (entry.isEmpty) {
+            ev.path[0].value = "";
+        } else {
+            ev.path[0].value = entry.points;
+        }
+        alert("Invalid input!");
+        return;
+    }
+
     if (isNaN(parsedInputValue)) {
         model.bonusPoints[row][col].removeScore();
     } else {
-        model.bonusPoints[row][col].changeScore(parsedInputValue, false);
+        model.bonusPoints[row][col].changeScore(parsedInputValue);
     }
 
     calculateScore();
@@ -343,10 +368,10 @@ function outputModelToTable() {
 
     // Add player columns and add rows
     for (let i = 0; i < model.players.length; i++) {
-        addPlayerColumn(i);
+        addPlayerToTable(i);
     }
     for (let row = 0; row < model.scorecard.length; row++) {
-        addCardRow(model.diceFaces[row]);
+        addTableRow(model.diceFaces[row]);
     }
 
     // Output values to cells
@@ -358,15 +383,13 @@ function outputModelToTable() {
                 if (!scoreEntry.isEmpty) {
                     if (scoreEntry.isVictory) {
                         cellInputField.value = "-";
-                        console.log("Victory");
-                        console.log(cellInputField);
                     } else {
                         cellInputField.value = scoreEntry.points;
                     }
                 }
             } else {
-                const scoreEntry =
-                    model.bonusPoints[row][col - model.players.length];
+                const bCol = col - model.players.length;
+                const scoreEntry = model.bonusPoints[row][bCol];
                 if (!scoreEntry.isEmpty) {
                     cellInputField.value = scoreEntry.points;
                 }
@@ -385,8 +408,12 @@ function addRowToModel(diceFaceValue) {
     const scorecardRow = Array(model.players.length);
     const bonusRow = Array(4);
 
-    scorecardRow.fill(new ScoreEntry());
-    bonusRow.fill(new ScoreEntry());
+    for (let i = 0; i < scorecardRow.length; i++) {
+        scorecardRow[i] = new ScoreEntry();
+    }
+    for (let i = 0; i < bonusRow.length; i++) {
+        bonusRow[i] = new ScoreEntry();
+    }
 
     model.scorecard.push(scorecardRow);
     model.bonusPoints.push(bonusRow);
