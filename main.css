@@ -1,5 +1,30 @@
+/*
+    General
+*/
+
 * {
     font-family: "Cairo", sans-serif;
+}
+
+.material-icons {
+    vertical-align: middle;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.vr {
+    border-left: 1px solid darkgrey;
+    margin: 0 11px 0 8px;
+}
+
+hr {
+    margin: 20px 0;
+}
+
+.d-none {
+    display: none;
 }
 
 table,
@@ -28,6 +53,63 @@ tfoot > tr > td:not(:first-child) {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
 
+.shadow-sm {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+/*
+    Navigation
+*/
+#navigation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+    -webkit-transition: top 0.5s ease-in-out;
+    -ms-transition: top 0.5s ease-in-out;
+    transition: top 0.5s ease-in-out;
+}
+
+#navigation.hidden {
+    top: -100vh;
+}
+
+#navigation-handle {
+    position: absolute;
+    text-align: center;
+    top: 100%;
+    width: 100%;
+}
+
+#navigation-handle > span {
+    background-color: white;
+    border-radius: 0 0 50% 50%;
+    padding: 5px 20px;
+    text-align: center;
+    -webkit-transition: background-color 0.1s linear;
+    -ms-transition: background-color 0.1s linear;
+    transition: background-color 0.1s linear;
+}
+
+#navigation-handle > span:hover,
+#btn-close-nav:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+#btn-close-nav {
+    margin-left: 100%;
+    transform: translateX(-100%);
+    padding: 10px;
+    -webkit-transition: background-color 0.1s linear;
+    -ms-transition: background-color 0.1s linear;
+    transition: background-color 0.1s linear;
+}
+
+/*
+    Scorecard
+*/
 .scorecard {
     margin: 0 auto 55px;
     padding: 10px;
