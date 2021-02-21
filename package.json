@@ -6,6 +6,12 @@
     "main": "main.js",
     "type": "module",
     "license": "GPL-3.0-only",
+    "directories": {
+        "test": "test"
+    },
+    "scripts": {
+        "test": "mocha"
+    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/Rickos99/DotcardScorecard.git"
