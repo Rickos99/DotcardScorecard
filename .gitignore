@@ -4,3 +4,6 @@
 .vscode/launch.json
 *.code-workspace
 *.log
+
+### npm ###
+node_modules

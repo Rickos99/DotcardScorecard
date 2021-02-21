@@ -1,0 +1,32 @@
+{
+    "author": "Rickard Bemm",
+    "name": "dotcard_scorecard",
+    "version": "0.0.1",
+    "description": "",
+    "main": "main.js",
+    "type": "module",
+    "license": "GPL-3.0-only",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Rickos99/DotcardScorecard.git"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "mocha": "^8.3.0"
+    },
+    "bugs": {
+        "url": "https://github.com/Rickos99/DotcardScorecard/issues"
+    },
+    "homepage": "https://github.com/Rickos99/DotcardScorecard#readme",
+    "prettier": {
+        "arrowParens": "avoid",
+        "bracketSpacing": true,
+        "endOfLine": "lf",
+        "printWidth": 120,
+        "semi": true,
+        "singleQuote": false,
+        "tabWidth": 4,
+        "trailingComma": "es5",
+        "useTabs": false
+    }
+}
