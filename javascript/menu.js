@@ -40,13 +40,22 @@ export class Menu {
 
     /**
      * @access public
+     * @param {boolean} animate Should the navigation anaimation be present?
      */
-    toggleNavigation() {
+    toggleNavigation(animate = true) {
         let classList = document.querySelector("#navigation").classList;
         if (classList.contains("hidden")) {
             classList.remove("hidden");
+            if (animate) {
+                classList.add("open");
+                setTimeout(() => classList.remove("open"), 500);
+            }
         } else {
             classList.add("hidden");
+            if (animate) {
+                classList.add("close");
+                setTimeout(() => classList.remove("close"), 500);
+            }
         }
     }
 

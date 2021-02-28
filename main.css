@@ -69,13 +69,30 @@ tfoot > tr > td:not(:first-child) {
     height: 100vh;
     z-index: 1000;
     background-color: white;
-    -webkit-transition: top 0.5s ease-in-out;
-    -ms-transition: top 0.5s ease-in-out;
-    transition: top 0.5s ease-in-out;
 }
 
 #navigation.hidden {
     top: -100vh;
+}
+
+#navigation.open {
+    animation-name: closeNavigation;
+    animation-duration: 0.5s;
+    animation-direction: reverse;
+}
+
+#navigation.close {
+    animation-name: closeNavigation;
+    animation-duration: 0.5s;
+}
+
+@keyframes closeNavigation {
+    0% {
+        top: 0vh;
+    }
+    100% {
+        top: -100vh;
+    }
 }
 
 #navigation-handle {
@@ -97,7 +114,7 @@ tfoot > tr > td:not(:first-child) {
 
 #navigation-handle > span:hover,
 #btn-close-nav:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: #f5f5f5;
 }
 
 #btn-close-nav {
@@ -144,7 +161,7 @@ tfoot > tr > td:not(:first-child) {
 .bonus-header {
     position: sticky;
     position: -webkit-sticky;
-    top: 0;
+    top: 30px;
     z-index: 100;
     background-color: white;
 }

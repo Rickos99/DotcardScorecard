@@ -13,6 +13,6 @@ window.onload = () => {
         scoreCard.outputModelToTable();
     } catch (error) {
         console.log(`No game with key ${gameKey} was found`);
-        new Menu().toggleNavigation();
+        new Menu().toggleNavigation(false);
     }
 };
