@@ -1,76 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Dotcard Scorecard</title>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dotcard Scorecard</title>
+        <link rel="stylesheet" href="main.css" />
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 
-    <link rel="stylesheet" href="main.css" />
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <script type="module" src="javascript/main.js"></script>
+    </head>
 
-    <script type="module" src="javascript/main.js"></script>
-</head>
-
-<body class="container">
-    <div id="navigation" class="hidden">
-        <div class="container">
-            <span id="btn-close-nav" gui-role="toogle-navigation" class="material-icons pointer">close</span>
-            <div>
-                <button id="btnPreviousGames" class="d-none">Previous games</button>
-                <button id="btnSaveGameAs" class="d-none">Save game as</button>
-                <span class="vr d-none"></span>
-                <button id="btnNewGame" class="d-none">New game</button>
-                <span class="vr d-none"></span>
-                <button id="btnExportGame">Export</button>
-                <button id="btnImportGame">Import</button>
+    <body class="container">
+        <div id="navigation" class="hidden">
+            <div class="container">
+                <span id="btn-close-nav" gui-role="toogle-navigation" class="material-icons pointer">close</span>
+                <div>
+                    <button id="btnSaveGameAs" class="d-none-test">Save game as</button>
+                    <span class="vr d-none-test"></span>
+                    <button id="btnExportGame">Export</button>
+                    <button id="btnImportGame">Import</button>
+                </div>
+                <div>
+                    <h2>Players</h2>
+                    <div id="playernames-inputs"></div>
+                    <button id="btnAddPlayerToList">Add a player</button>
+                    <button id="btnStartNewGame">Start a new game</button>
+                </div>
+                <hr />
+                <div class="d-none-test">
+                    <h2>Previous games</h2>
+                    <ul id="previousGamesList"></ul>
+                </div>
             </div>
-            <div>
-                <h2>Players</h2>
-                <div id="playernames-inputs"></div>
-                <button id="btnAddPlayerToList">Add a player</button>
-                <button id="btnStartGame">Start a new game</button>
-            </div>
-            <hr>
-            <div class="d-none">
-                <h2>Previous games</h2>
-                <ul id="previousGamesList"></ul>
+            <div id="navigation-handle">
+                <span class="material-icons shadow-sm pointer" gui-role="toogle-navigation">expand_more</span>
             </div>
         </div>
-        <div id="navigation-handle" gui-role="toogle-navigation">
-            <span class="material-icons shadow-sm pointer">expand_more</span>
+        <script></script>
+        <div style="overflow-x: auto">
+            <table id="scorecard" class="shadow-lg scorecard">
+                <thead>
+                    <tr>
+                        <td colspan="1" id="card-header-datacell">
+                            <h1 class="card-header">Dotcard</h1>
+                        </td>
+                        <td colspan="4">Bonus</td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th class="bonus-header">0</th>
+                        <th class="bonus-header">-5</th>
+                        <th class="bonus-header">-10</th>
+                        <th class="bonus-header">-15</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot>
+                    <tr>
+                        <td>&Sigma;</td>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
-    </div>
-    <script>
-
-    </script>
-    <div style="overflow-x: auto;">
-        <table id="scorecard" class="shadow-lg scorecard">
-            <thead>
-                <tr>
-                    <td colspan="1" id="card-header-datacell">
-                        <h1 class="card-header">Dotcard</h1>
-                    </td>
-                    <td colspan="4">Bonus</td>
-                </tr>
-                <tr>
-                    <th></th>
-                    <th class="bonus-header">0</th>
-                    <th class="bonus-header">-5</th>
-                    <th class="bonus-header">-10</th>
-                    <th class="bonus-header">-15</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-            <tfoot>
-                <tr>
-                    <td>&Sigma;</td>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
-</body>
-
+    </body>
 </html>
