@@ -6,9 +6,10 @@
         <title>Dotcard Scorecard</title>
 
         <link rel="stylesheet" href="main.css" />
+        <link rel="stylesheet" href="css/keyboard.css" />
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
         <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet" />
 
         <script type="module" src="javascript/main.js"></script>
     </head>
@@ -65,5 +66,37 @@
                 </tfoot>
             </table>
         </div>
+        <table class="numpad">
+            <tbody>
+                <tr>
+                    <td><button>1</button></td>
+                    <td><button>2</button></td>
+                    <td><button>3</button></td>
+                    <td>
+                        <button class="btn-secondary"><span class="material-icons-outlined">backspace</span></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><button>4</button></td>
+                    <td><button>5</button></td>
+                    <td><button>6</button></td>
+                    <td rowspan="2"><button class="btn-secondary">-</button></td>
+                </tr>
+                <tr>
+                    <td><button>7</button></td>
+                    <td><button>8</button></td>
+                    <td><button>9</button></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><button>0</button></td>
+                    <td>
+                        <button class="btn-secondary"><span class="material-icons">keyboard_hide</span></button>
+                    </td>
+                    <td>
+                        <button class="btn-accent"><span class="material-icons">keyboard_tab</span></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </body>
 </html>
