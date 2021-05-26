@@ -7,13 +7,13 @@ self.addEventListener("install", e => {
                 .addAll([
                     `/DotcardScorecard/index.html`,
                     `/DotcardScorecard/styles/main.css`,
-                    `/DotcardScorecard/scripts/diceFaces.js`,
-                    `/DotcardScorecard/scripts/fs.js`,
-                    `/DotcardScorecard/scripts/gamemodel.js`,
-                    `/DotcardScorecard/scripts/localstorage.js`,
-                    `/DotcardScorecard/scripts/main.js`,
-                    `/DotcardScorecard/scripts/menu.js`,
-                    `/DotcardScorecard/scripts/scorecard.js`,
+                    `/DotcardScorecard/javascript/diceFaces.js`,
+                    `/DotcardScorecard/javascript/fs.js`,
+                    `/DotcardScorecard/javascript/gamemodel.js`,
+                    `/DotcardScorecard/javascript/localstorage.js`,
+                    `/DotcardScorecard/javascript/main.js`,
+                    `/DotcardScorecard/javascript/menu.js`,
+                    `/DotcardScorecard/javascript/scorecard.js`,
                 ])
                 .then(() => self.skipWaiting());
         })
