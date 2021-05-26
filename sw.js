@@ -5,16 +5,15 @@ self.addEventListener("install", e => {
         caches.open(cacheName).then(cache => {
             return cache
                 .addAll([
-                    `/`,
-                    `/index.html`,
-                    `/styles/main.css`,
-                    `/scripts/diceFaces.js`,
-                    `/scripts/fs.js`,
-                    `/scripts/gamemodel.js`,
-                    `/scripts/localstorage.js`,
-                    `/scripts/main.js`,
-                    `/scripts/menu.js`,
-                    `/scripts/scorecard.js`,
+                    `/DotcardScorecard/index.html`,
+                    `/DotcardScorecard/styles/main.css`,
+                    `/DotcardScorecard/scripts/diceFaces.js`,
+                    `/DotcardScorecard/scripts/fs.js`,
+                    `/DotcardScorecard/scripts/gamemodel.js`,
+                    `/DotcardScorecard/scripts/localstorage.js`,
+                    `/DotcardScorecard/scripts/main.js`,
+                    `/DotcardScorecard/scripts/menu.js`,
+                    `/DotcardScorecard/scripts/scorecard.js`,
                 ])
                 .then(() => self.skipWaiting());
         })
