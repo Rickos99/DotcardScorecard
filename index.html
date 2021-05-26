@@ -5,8 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Dotcard Scorecard</title>
 
-        <link rel="stylesheet" href="main.css" />
-        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+        <link rel="manifest" href="manifest.json" />
+
+        <link rel="stylesheet" href="styles/main.css" />
+        <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
         <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 
@@ -65,5 +67,18 @@
                 </tfoot>
             </table>
         </div>
+        <script>
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker
+                    .register("/DotcardScorecard/sw.js", { scope: "/DotcardScorecard/" })
+                    .then(function (registration) {
+                        console.log("Service Worker Registered");
+                    });
+
+                navigator.serviceWorker.ready.then(function (registration) {
+                    console.log("Service Worker Ready");
+                });
+            }
+        </script>
     </body>
 </html>
