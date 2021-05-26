@@ -24,13 +24,18 @@ self.addEventListener("activate", event => {
     event.waitUntil(self.clients.claim());
 });
 
-self.addEventListener("fetch", event => {
+self.addEventListener("fetch", async event => {
     event.respondWith(
-        caches
-            .open(cacheName)
-            .then(cache => cache.match(event.request, { ignoreSearch: true }))
-            .then(response => {
-                return response || fetch(event.request);
-            })
+        caches.match(event.request).then(response => {
+            if (response !== undefined) return response;
+
+            return fetch(event.request).then(response => {
+                var responseCopy = response.clone();
+                caches.open(cacheName).then(cache => {
+                    cache.put(event.request, responseCopy);
+                });
+                return response;
+            });
+        })
     );
 });
