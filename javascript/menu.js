@@ -1,6 +1,11 @@
 import { download, openFromFileSelector } from "./fs.js";
 import { GameModel } from "./gamemodel.js";
-import { saveToLocalStorage, findInLocalStorage, loadFromLocalStorage } from "./localstorage.js";
+import {
+    saveToLocalStorage,
+    findInLocalStorage,
+    loadFromLocalStorage,
+    removeFromLocalStorage,
+} from "./localstorage.js";
 
 export class Menu {
     static _navigationContainerId = "#navigation";
@@ -96,18 +101,27 @@ export class Menu {
         entries.forEach(entry => {
             const li = document.createElement("li");
             const title = document.createElement("b");
-            const btn = document.createElement("button");
+            const btnLoad = document.createElement("button");
+            const btnRemove = document.createElement("button");
             const gameKey = entry.key;
+            const nameOfGame = gameKey.replace(Menu._oldGameKeyBegValue, "");
 
-            title.innerText = gameKey.replace(Menu._oldGameKeyBegValue, "");
-            btn.innerText = "Load";
-            btn.addEventListener("click", () => {
+            title.innerText = nameOfGame;
+            btnLoad.innerText = "Load";
+            btnLoad.addEventListener("click", () => {
                 if (confirm("Current game will be lost, do you want to continue?")) {
                     this.loadPreviousGame(gameKey);
                 }
             });
+            btnRemove.innerText = "Remove";
+            btnRemove.addEventListener("click", () => {
+                if (confirm(`The game '${nameOfGame}' will be removed, do you want to contiune?`)) {
+                    this.removePreviousGame(gameKey);
+                }
+            });
 
-            li.appendChild(btn);
+            li.appendChild(btnLoad);
+            li.appendChild(btnRemove);
             li.appendChild(title);
             prevGameList.appendChild(li);
         });
@@ -117,6 +131,12 @@ export class Menu {
         const prevGame = loadFromLocalStorage(key);
         saveToLocalStorage(prevGame);
         window.location.reload();
+    }
+
+    removePreviousGame(key) {
+        removeFromLocalStorage(key);
+        this.outputPreviousGames();
+        alert(`The game was removed`);
     }
 
     /**
