@@ -1,4 +1,4 @@
-const version = "0.1.1";
+const version = "0.2.1";
 const cacheName = `dotScorecard-${version}`;
 self.addEventListener("install", e => {
     e.waitUntil(
