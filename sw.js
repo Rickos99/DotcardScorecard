@@ -1,4 +1,4 @@
-const version = "0.2.1";
+const version = "0.2.2";
 const cacheName = `dotScorecard-${version}`;
 self.addEventListener("install", e => {
     e.waitUntil(
@@ -26,7 +26,7 @@ self.addEventListener("activate", event => {
 
 self.addEventListener("fetch", async event => {
     event.respondWith(
-        caches.match(event.request).then(response => {
+        caches.match(event.request, { cacheName }).then(response => {
             if (response !== undefined) return response;
 
             return fetch(event.request).then(response => {
