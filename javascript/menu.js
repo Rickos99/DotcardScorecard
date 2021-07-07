@@ -5,6 +5,7 @@ import {
     findInLocalStorage,
     loadFromLocalStorage,
     removeFromLocalStorage,
+    keyExistsInLocalStorage,
 } from "./localstorage.js";
 
 export class Menu {
@@ -190,11 +191,17 @@ export class Menu {
      */
     async saveGameAs() {
         const name = prompt("Name of game");
-        if (name === null || name === "") {
+        if (name === null || name === "") return;
+
+        this._gameModel.nameOfGame = `${Menu._oldGameKeyBegValue}${name}`;
+        if (
+            keyExistsInLocalStorage(this._gameModel.nameOfGame) &&
+            !confirm("An game with that name already exists, do you want to overwrite it?")
+        ) {
+            this.saveGameAs();
             return;
         }
 
-        this._gameModel.nameOfGame = `${Menu._oldGameKeyBegValue}${name}`;
         saveToLocalStorage(this._gameModel);
         alert(`Game was saved as ${name}`);
         this.outputPreviousGames();

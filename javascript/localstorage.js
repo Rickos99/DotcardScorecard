@@ -56,3 +56,13 @@ export async function findInLocalStorage(query, parseValuesAsJson) {
     }
     return results;
 }
+
+/**
+ * Check whether an object with the specified key exists or not.
+ * @param {string} key The key to check
+ * @returns {boolean} True if an object with the specified key exists, else false.
+ */
+export async function keyExistsInLocalStorage(key) {
+    const keys = Object.keys(localStorage);
+    return keys.includes(key);
+}
