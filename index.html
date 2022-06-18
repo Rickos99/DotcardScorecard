@@ -72,9 +72,12 @@
         <script>
             if ("serviceWorker" in navigator) {
                 navigator.serviceWorker
-                    .register("/DotcardScorecard/sw.js", { scope: "/DotcardScorecard/" })
+                    .register("./sw.js", { scope: "./" })
                     .then(function (registration) {
                         console.log("Service Worker Registered");
+                    })
+                    .catch(err => {
+                        console.error(`Service worker not regiested due to error. \n${err}`);
                     });
 
                 navigator.serviceWorker.ready.then(function (registration) {
