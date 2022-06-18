@@ -1,27 +1,29 @@
 {
-    "short_name": "Dotcard Scorecard",
     "name": "Scorecard for Dotcard",
+    "short_name": "Dotcard Scorecard",
+    "start_url": "./",
+    "scope": "./",
+    "display": "standalone",
+    "description": "A simple scorecard to the card game Dotcard",
+    "lang": "sv-SE",
+    "theme_color": "#FFF",
+    "background_color": "#FFF",
+    "orientation": "any",
     "icons": [
         {
-            "src": "/DotcardScorecard/images/card-192.png",
+            "src": "./images/card-192.png",
             "type": "image/png",
             "sizes": "192x192"
         },
         {
-            "src": "/DotcardScorecard/images/card-512.png",
+            "src": "./images/card-512.png",
             "type": "image/png",
             "sizes": "512x512"
         },
         {
-            "src": "/DotcardScorecard/images/card-1024.png",
+            "src": "./images/card-1024.png",
             "type": "image/png",
             "sizes": "1024x1024"
         }
-    ],
-    "start_url": "/DotcardScorecard/",
-    "background_color": "#FFF",
-    "display": "fullscreen",
-    "scope": "/DotcardScorecard/",
-    "theme_color": "#FFF",
-    "description": "A simple scorecard to the card game Dotcard"
+    ]
 }
