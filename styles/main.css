@@ -79,7 +79,7 @@ tfoot > tr > td:not(:first-child) {
 #navigation > .container {
     max-height: 100vh;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 #navigation.hidden {
