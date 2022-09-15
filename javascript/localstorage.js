@@ -38,7 +38,7 @@ export function removeFromLocalStorage(key) {
  * @param {boolean} parseValuesAsJson
  * @returns {Promise<Array<{key:string, value:string|object}>>}
  */
-export async function findInLocalStorage(query, parseValuesAsJson) {
+export function findInLocalStorage(query, parseValuesAsJson) {
     let results = [];
     for (let i in localStorage) {
         if (localStorage.hasOwnProperty(i)) {
