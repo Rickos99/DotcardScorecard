@@ -122,18 +122,23 @@ export class ScoreCard {
      * @param {ScoreCard} scorecard
      */
     async onBonusInputChange(ev, scorecard) {
-        const parsedInputValue = parseInt(ev.path[0].value);
-        const bonuspointsCol = ev.path[1].cellIndex + 4 - ev.path[2].childElementCount;
-        const bonuspointsRow = ev.path[2].rowIndex - ev.path[4].tHead.rows.length;
+        const dataInputElement = ev.target;
+        const tableDataElement = dataInputElement.parentNode;
+        const tableRowElement = tableDataElement.parentNode;
+        const tableElement = tableRowElement.parentNode.parentNode;
+
+        const parsedInputValue = parseInt(dataInputElement.value);
+        const bonuspointsCol = tableDataElement.cellIndex + 4 - tableRowElement.childElementCount;
+        const bonuspointsRow = tableRowElement.rowIndex - tableElement.tHead.rows.length;
 
         if (parsedInputValue < 0 || parsedInputValue > 9) {
             const entry = scorecard._GameModel.bonusPoints[bonuspointsRow][bonuspointsCol];
 
             // Restore previous value
             if (entry.isEmpty) {
-                ev.path[0].value = "";
+                dataInputElement.value = "";
             } else {
-                ev.path[0].value = entry.points;
+                dataInputElement.value = entry.points;
             }
             alert("Invalid input!");
             return;
@@ -155,9 +160,14 @@ export class ScoreCard {
      * @param {ScoreCard} scorecard
      */
     async onScoreInputChange(ev, scorecard) {
-        const rawinputValue = ev.path[0].value;
-        const scorecardCol = ev.path[1].cellIndex - 1;
-        const scorecardRow = ev.path[2].rowIndex - ev.path[4].tHead.rows.length;
+        const dataInputElement = ev.target;
+        const tableDataElement = dataInputElement.parentNode;
+        const tableRowElement = tableDataElement.parentNode;
+        const tableElement = tableRowElement.parentNode.parentNode;
+
+        const rawinputValue = dataInputElement.value;
+        const scorecardCol = tableDataElement.cellIndex - 1;
+        const scorecardRow = tableRowElement.rowIndex - tableElement.tHead.rows.length;
 
         if (rawinputValue === "-") {
             scorecard._GameModel.scorecard[scorecardRow][scorecardCol].addVictory();
