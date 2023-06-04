@@ -1,0 +1,29 @@
+name: Docker Image CI
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  build_and_publish:
+    environment: production
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Docker login
+        env:
+          DOCKER_USER: ${{secrets.DOCKER_USER}}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+        run: echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USER --password-stdin
+
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag ${{vars.DOCKER_REPO}}:$GITHUB_REF_NAME --tag ${{vars.DOCKER_REPO}}:latest
+
+      - name: Docker Push
+        run: docker push ${{vars.DOCKER_REPO}} --all-tags
+
+      - name: Docker remove runner config
+        run: rm /home/runner/.docker/config.json
