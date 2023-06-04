@@ -1,6 +1,6 @@
 import { describe, it } from "mocha";
 import { deepStrictEqual, strictEqual } from "assert";
-import { ScoreEntry } from "../javascript/gamemodel.js";
+import { ScoreEntry } from "../public_html/javascript/gamemodel.js";
 
 describe("ScoreEntry", () => {
     describe("addVictory()", () => {
