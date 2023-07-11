@@ -81,6 +81,17 @@ export const diceFaces = {
     },
 };
 
+export const gamemodeDiceLayouts = {
+    normal: [9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+    short: [9, 8, 7, 6, 5, 4, 3, 2, 1, 0],
+};
+
+export const gamemodeNames = {
+    normal: "Normal",
+    short: "Short",
+    random: "Random",
+};
+
 /**
  * Generates a SVG element with the specified value
  * @param {Number} faceValue Value of diceface
@@ -112,4 +123,49 @@ export function generateDiceFace(faceValue) {
         }
     }
     return svgNode;
+}
+
+/**
+ * Returns an array of dicefaces for the specified gamemode
+ * @access public
+ * @param {string} gamemode Name of gamemode
+ * @param {number} rounds Number of rounds
+ * @returns {Array<number>} Array of dicefaces
+ */
+export function getDiceFaceLayout(gamemode, rounds) {
+    switch (gamemode) {
+        case gamemodeNames.normal:
+            return gamemodeDiceLayouts.normal;
+        case gamemodeNames.short:
+            return gamemodeDiceLayouts.short;
+        case gamemodeNames.random:
+            return generateRandomDiceFaceLayout(rounds);
+        default:
+            throw new Error("Unknown gamemode");
+    }
+}
+
+/**
+ * Generates a random array of dicefaces
+ * @access private
+ * @param {number} rounds Number of rounds
+ * @returns {Array<number>} Array of dicefaces
+ */
+function generateRandomDiceFaceLayout(rounds) {
+    const diceFaceLayout = [];
+    for (let i = 0; i < rounds; i++) {
+        diceFaceLayout.push(getRandomInt(0, 9));
+    }
+    return diceFaceLayout;
+}
+
+/**
+ * Returns a random integer between min (inclusive) and max (inclusive)
+ * @access private
+ * @param {number} min inclusive min
+ * @param {number} max inclusive max
+ * @returns {number} Random integer between min and max
+ */
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
