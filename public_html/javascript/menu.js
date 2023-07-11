@@ -7,10 +7,13 @@ import {
     removeFromLocalStorage,
     keyExistsInLocalStorage,
 } from "./localstorage.js";
+import { gamemodeNames, getDiceFaceLayout } from "./diceFaces.js";
 
 export class Menu {
     static _navigationContainerId = "#navigation";
     static _playersContainerName = "#playernames-inputs";
+    static _gamemodeSelectorId = "#gamemode-input";
+    static _roundsInputId = "#rounds-input";
     static _oldGameKeyBegValue = "game:";
 
     /**
@@ -27,13 +30,9 @@ export class Menu {
     constructor(gameModel) {
         this._gameModel = gameModel;
         this.attachEventListeners();
+        this.outputAvaliableGameModes();
         this.outputPreviousGames();
-        if (this._gameModel !== undefined) {
-            this._gameModel.players.forEach((playerName, index) => {
-                this.addPlayerNameInput();
-                this.setPlayerNameInputValue(playerName, index);
-            });
-        }
+        this.outputCurrentGameSettings();
     }
 
     /**
@@ -128,6 +127,20 @@ export class Menu {
         });
     }
 
+    async outputCurrentGameSettings() {
+        if (this._gameModel === undefined) {
+            return;
+        }
+
+        this._gameModel.players.forEach((playerName, index) => {
+            this.addPlayerNameInput();
+            this.setPlayerNameInputValue(playerName, index);
+        });
+
+        this.setGamemodeSelectorValue(this._gameModel.gamemode);
+        this.setRoundsInputValue(this._gameModel.rounds);
+    }
+
     loadPreviousGame(key) {
         const prevGame = loadFromLocalStorage(key);
         saveToLocalStorage(prevGame);
@@ -156,6 +169,9 @@ export class Menu {
         document.querySelector("#btnImportGame").addEventListener("click", async () => this.importGame());
         document.querySelector("#btnAddPlayerToList").addEventListener("click", async () => this.addPlayerNameInput());
         document.querySelector("#btnStartNewGame").addEventListener("click", async () => this.startNewGame());
+        document
+            .querySelector(Menu._gamemodeSelectorId)
+            .addEventListener("change", () => this.displayOrHideRoundsInput());
 
         document.querySelectorAll('[gui-role="toogle-navigation"]').forEach(el => {
             el.addEventListener("click", () => this.toggleNavigation());
@@ -218,8 +234,10 @@ export class Menu {
             return;
         }
 
-        const diceFaces = [9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-        const gamemodel = new GameModel(players, diceFaces);
+        const gamemode = document.querySelector(Menu._gamemodeSelectorId).value;
+        const rounds = parseInt(document.querySelector(Menu._roundsInputId).value);
+        const diceFaces = getDiceFaceLayout(gamemode, rounds);
+        const gamemodel = new GameModel(players, diceFaces, gamemode);
         saveToLocalStorage(gamemodel);
         window.location.reload();
     }
@@ -246,6 +264,23 @@ export class Menu {
 
     /**
      * @access private
+     * @param {string} gamemode
+     */
+    setGamemodeSelectorValue(gamemode) {
+        document.querySelector(Menu._gamemodeSelectorId).value = gamemode;
+        this.displayOrHideRoundsInput();
+    }
+
+    /**
+     *
+     * @param {number} rounds
+     */
+    setRoundsInputValue(rounds) {
+        document.querySelector(Menu._roundsInputId).value = rounds;
+    }
+
+    /**
+     * @access private
      */
     addPlayerNameInput() {
         const parent = document.querySelector(Menu._playersContainerName);
@@ -262,5 +297,31 @@ export class Menu {
         div.appendChild(input);
         div.appendChild(span);
         parent.appendChild(div);
+    }
+
+    /**
+     * @access private
+     */
+    outputAvaliableGameModes() {
+        const selector = document.querySelector(Menu._gamemodeSelectorId);
+        Object.keys(gamemodeNames).forEach(key => {
+            const option = document.createElement("option");
+            option.value = gamemodeNames[key];
+            option.innerText = gamemodeNames[key];
+            selector.appendChild(option);
+        });
+    }
+
+    /**
+     * @access private
+     */
+    displayOrHideRoundsInput() {
+        const roundInputGroup = document.querySelector("#rounds-input-group");
+        const selectedGamemode = document.querySelector(Menu._gamemodeSelectorId).value;
+        if (selectedGamemode === gamemodeNames.random) {
+            roundInputGroup.classList.remove("hidden");
+        } else {
+            roundInputGroup.classList.add("hidden");
+        }
     }
 }

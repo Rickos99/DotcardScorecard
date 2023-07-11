@@ -1,3 +1,4 @@
+import { gamemodeNames } from "./diceFaces.js";
 import { ScoreCard } from "./scorecard.js";
 
 export { GameModel, ScoreEntry };
@@ -50,7 +51,7 @@ class GameModel {
      * @returns {GameModel}
      */
     static initNew(model) {
-        const newModel = new GameModel(model.players, model.diceFaces);
+        const newModel = new GameModel(model.players, model.diceFaces, model.gamemode);
 
         for (let row = 0; row < model.scorecard.length; row++) {
             // Scorecard
@@ -70,10 +71,13 @@ class GameModel {
      * @access public
      * @param {Array<string>} players An array of all playernames
      * @param {Array<number>} diceFaces The value of the diceFaces
+     * @param {string} gamemode The gamemode to play
      */
-    constructor(players, diceFaces) {
+    constructor(players, diceFaces, gamemode) {
         this.diceFaces = diceFaces;
         this.players = players;
+        this.gamemode = gamemode ? gamemode : gamemodeNames.normal;
+        this.rounds = diceFaces.length;
         this.appendRows();
     }
 
@@ -177,4 +181,14 @@ class GameModel {
      * @type {string}
      */
     nameOfGame = "currentGame";
+
+    /**
+     * @type {string}
+     */
+    gamemode = gamemodeNames.normal;
+
+    /**
+     * @type {number}
+     */
+    rounds = 20;
 }

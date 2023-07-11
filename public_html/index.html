@@ -26,11 +26,30 @@
                         <button id="btnExportGame">Export</button>
                         <button id="btnImportGame">Import</button>
                     </div>
+                    <hr />
                     <div>
-                        <h2>Players</h2>
-                        <div id="playernames-inputs"></div>
-                        <button id="btnAddPlayerToList">Add a player</button>
-                        <button id="btnStartNewGame">Start a new game</button>
+                        <h2>Game options</h2>
+                        <div id="game-settings">
+                            <fieldset>
+                                <legend>Players</legend>
+                                <div id="playernames-inputs"></div>
+                                <button id="btnAddPlayerToList">Add a player</button>
+                            </fieldset>
+                            <fieldset>
+                                <legend>Other</legend>
+                                <div>
+                                    <label for="gamemode-input">Gamemode:</label>
+                                    <select id="gamemode-input"></select>
+                                </div>
+                                <div id="rounds-input-group" class="hidden">
+                                    <label for="rounds-input">Rounds:</label>
+                                    <input type="number" id="rounds-input" min="1" max="1000" value="20" step="1" />
+                                </div>
+                            </fieldset>
+                        </div>
+                        <span>
+                            <button id="btnStartNewGame">Start a new game</button>
+                        </span>
                     </div>
                     <hr />
                     <div>
