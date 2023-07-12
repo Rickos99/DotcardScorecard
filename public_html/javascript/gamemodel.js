@@ -1,5 +1,4 @@
 import { gamemodeNames } from "./diceFaces.js";
-import { ScoreCard } from "./scorecard.js";
 
 export { GameModel, ScoreEntry };
 

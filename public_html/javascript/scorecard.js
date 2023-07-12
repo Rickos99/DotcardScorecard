@@ -1,5 +1,5 @@
 import { GameModel } from "./gamemodel.js";
-import { diceFaces, generateDiceFace } from "./diceFaces.js";
+import { generateDiceFace } from "./diceFaces.js";
 import { saveToLocalStorage } from "./localstorage.js";
 
 export class ScoreCard {
