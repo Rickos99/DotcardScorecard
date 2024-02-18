@@ -3,8 +3,8 @@
 
 # DotcardScorecard
 <p align="center" float="left">
-  <img alt="Scorecard UI" src="https://user-images.githubusercontent.com/12218241/187245731-003bdcb6-655b-4f8e-889c-8e287ab83a3d.png" width="400" border="true">
-  <img alt="Scorecard menu" src="https://user-images.githubusercontent.com/12218241/187245668-bdce5261-e63d-42bc-b01c-ce01462d4ece.png" width="400">
+  <img alt="Scorecard UI" src="https://github.com/Rickos99/DotcardScorecard/assets/12218241/c9f73a73-765e-46bf-8e2d-a0b10806a88c" width="400" border="true">
+  <img alt="Scorecard menu" src="https://github.com/Rickos99/DotcardScorecard/assets/12218241/ef9b92e8-7ee1-48a0-858c-0050fca718b5" width="400">
 </p>
 
 ## Getting Started
